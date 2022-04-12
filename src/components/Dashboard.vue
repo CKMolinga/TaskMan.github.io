@@ -27,7 +27,19 @@
             <div class="profile-img"></div>
           </router-link>
       </nav>
-      <main></main>
+      <main class="left-flex">
+          <section class="top">
+              <div class="add-task">
+                  <router-link to="/dashboard">New Task</router-link>
+              </div>
+              <div class="logout-trigger">
+                    <router-link to="/login">Logout</router-link>
+                    <router-link to="/login">
+                        <span class="material-icons">logout</span>
+                    </router-link>
+              </div>
+          </section>
+      </main>
   </div>
 </template>
 
@@ -40,6 +52,10 @@ export default {
 <style scoped>
 .container {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem;
+
 }
 nav.sidebar {
     display: flex;
@@ -97,5 +113,54 @@ ul.sidebar-menu li.menu-icon a:hover {
     background-size: cover;
     background-position: center;
 
+}
+.profile-img:hover {
+    transform: scale(1.1);
+}
+main.left-flex {
+    width: 85vw;
+    height: 100%;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+section.top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    height: 5rem;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+.add-task {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: #292F4C;
+    border-radius: 0.2rem; 
+}
+.add-task a {
+    color: #fff;
+    text-decoration: none;
+}
+.logout-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    color: #292F4C;
+}
+.logout-trigger a {
+    color: #292F4C;
+    text-decoration: none;
+    padding: 0.5rem 0.2rem;
 }
 </style>

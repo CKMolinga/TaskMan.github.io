@@ -28,6 +28,7 @@
           </router-link>
       </nav>
       <main class="left-flex">
+
           <section class="top">
               <div class="add-task">
                   <router-link to="/dashboard">New Task</router-link>
@@ -39,6 +40,74 @@
                     </router-link>
               </div>
           </section>
+          
+          <section class="tasks">
+              <div class="task-group">
+                  <span class="material-icons">arrow_drop_down</span>
+                  <h3>Project 1</h3>
+              </div>
+              <div class="tasks-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Status</th>
+                                <th>Assigned to</th>
+                                <th>Due date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Task 1
+                                    <span class="material-icons comment">comment</span>
+                                </td>
+                                <td>In progress</td>
+                                <td>John Doe</td>
+                                <td>12/12/12</td>
+                            </tr>
+                            <tr>
+                                <td>Task 2
+                                    <span class="material-icons comment">comment</span>
+                                </td>
+                                <td>Completed</td>
+                                <td>John Doe</td>
+                                <td>12/12/12</td>
+                            </tr>
+                            <tr>
+                                <td>Task 3
+                                    <span class="material-icons comment">comment</span>
+                                </td>
+                                <td>In progress</td>
+                                <td>John Doe</td>
+                                <td>12/12/12</td>
+                            </tr>
+                            <tr>
+                                <td>Task 4
+                                    <span class="material-icons comment">comment</span>
+                                </td>
+                                <td class="cancelled">Cancelled</td>
+                                <td>John Doe</td>
+                                <td>12/12/12</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="material-icons">add_circle_outline</span>
+                                </td>
+                                <td>
+                                    <span class="material-icons">add_circle_outline</span>
+                                </td>
+                                <td>
+                                    <span class="material-icons">add_circle_outline</span>
+                                </td>
+                                <td>
+                                    <span class="material-icons">add_circle_outline</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+              </div>
+          </section>
+
       </main>
   </div>
 </template>
@@ -126,6 +195,7 @@ main.left-flex {
     right: 0;
     z-index: 100;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
 }
 section.top {
     display: flex;
@@ -136,7 +206,9 @@ section.top {
     height: 5rem;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 .add-task {
     display: flex;
@@ -163,4 +235,64 @@ section.top {
     text-decoration: none;
     padding: 0.5rem 0.2rem;
 }
+section.tasks {
+    padding: 0 1rem;
+}
+.task-group {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    color: #292F4C;
+    border-radius: 0.2rem;
+}
+.task-group span {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+.task-group h3 {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+.tasks-table {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    background-color: #292F4C;
+    color: #fff;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #E5E5E5;
+}
+table th {
+    padding: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    background: #f1f1f1;
+    color: #292F4C;
+    border: 1px solid #E5E5E5;
+}
+table td {
+    text-align: left;
+    border: 1px solid #E5E5E5;
+    padding: 1rem;
+}
+td .material-icons {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+/* push comment icons to right  */
+td .comment {
+    margin-left: 5rem;
+    text-align: right;
+}
+td .cancelled {
+    background-color: red;
+}
+
 </style>

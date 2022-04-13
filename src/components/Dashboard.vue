@@ -61,7 +61,14 @@
                                 <td>Task 1
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <td>In progress</td>
+                                <td class="in-progress task-group-select">
+                                    <select name="" id="" class="status-options">
+                                        <option value="" class="options">In progress</option>
+                                        <option value="" class="options">Completed</option>
+                                        <option value="" class="options">Pending</option>
+                                        <option value="" class="options">Cancelled</option>
+                                    </select>
+                                </td>
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
                             </tr>
@@ -69,7 +76,15 @@
                                 <td>Task 2
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <td>Completed</td>
+                                <!-- <td class="completed">Completed</td> -->
+                                <td class="completed task-group-select">
+                                    <select name="" id="" class="status-options">
+                                        <option value="" class="options">Completed</option>
+                                        <option value="" class="options">In progress</option>
+                                         <option value="" class="options">Pending</option>
+                                        <option value="" class="options">Cancelled</option>
+                                    </select>
+                                </td>
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
                             </tr>
@@ -77,7 +92,14 @@
                                 <td>Task 3
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <td>In progress</td>
+                                <td class="pending task-group-select">
+                                    <select name="" id="" class="status-options">
+                                        <option value="" class="options">Pending</option>
+                                        <option value="" class="options">Completed</option>
+                                        <option value="" class="options">In progress</option>
+                                        <option value="" class="options">Cancelled</option>
+                                    </select>
+                                </td>
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
                             </tr>
@@ -85,7 +107,14 @@
                                 <td>Task 4
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <td class="cancelled">Cancelled</td>
+                                <td class="cancelled task-group-select">
+                                    <select name="" id="" class="status-options">
+                                        <option value="" class="options">Cancelled</option>
+                                        <option value="" class="options">Completed</option>
+                                        <option value="" class="options">In progress</option>
+                                         <option value="" class="options">Pending</option>
+                                    </select>
+                                </td>
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
                             </tr>
@@ -291,8 +320,32 @@ td .comment {
     margin-left: 5rem;
     text-align: right;
 }
-td .cancelled {
-    background-color: red;
+/* Red background color to indicate a cancelled task */
+td.cancelled {
+    background-color: #F5A9A9;
 }
-
+/* Green background color to indicate a completed task */
+td.completed {
+    background-color: #A9F5A9;
+}
+/* Blue background color to indicate a pending task */
+td.pending {
+    background-color: #a9e6f5;
+}
+/* Yellow background color to indicate a in progress task */
+td.in-progress {
+    background-color: #FFFF00;
+}
+.task-group-select select {
+    width: 100%;
+    outline: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+}
+select option {
+    color: #292F4C;
+}
 </style>

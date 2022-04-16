@@ -13,12 +13,12 @@
                     </router-link>
                 </li>
                 <li class="sidebar-menu__item menu-icon">
-                    <router-link to="/dashboard" class="sidebar-menu__link">
+                    <router-link to="/Add-Member" class="sidebar-menu__link">
                         <span class="material-icons">people</span>
                     </router-link>
                 </li>
                 <li class="sidebar-menu__item menu-icon">
-                    <router-link to="/dashboard" class="sidebar-menu__link">
+                    <router-link to="/notifications" class="sidebar-menu__link">
                         <span class="material-icons">notifications</span>
                     </router-link>
                 </li>
@@ -31,7 +31,7 @@
 
           <section class="top">
               <div class="add-task">
-                  <router-link to="/dashboard">New Task</router-link>
+                  <router-link to="/add-task">New Task</router-link>
               </div>
               <div class="logout-trigger">
                     <router-link to="/login">Logout</router-link>

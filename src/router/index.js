@@ -5,6 +5,9 @@ import Login from '../views/Login.vue'
 import About from '../views/About.vue'
 import UserManual from '../views/UserManual.vue'
 import Dashboard from '../components/Dashboard.vue'
+import AddMember from '../views/Add-Member.vue'
+import AddTask from '../views/Add-Task.vue'
+import Notifications from '../views/Notifications.vue'
 
 const routes = [{
         path: '/',
@@ -35,6 +38,21 @@ const routes = [{
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard
+    },
+    {
+        path: '/add-member',
+        name: 'AddMember',
+        component: AddMember
+    },
+    {
+        path: '/add-task',
+        name: 'AddTask',
+        component: AddTask
+    },
+    {
+        path: '/notifications',
+        name: 'Notifications',
+        component: Notifications
     }
 ]
 

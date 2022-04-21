@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+      
       <nav class="sidebar">
           <ul class="sidebar-menu">
                 <li class="sidebar-menu__item">
@@ -27,6 +28,7 @@
             <div class="profile-img"></div>
           </router-link>
       </nav>
+
       <main class="left-flex">
 
           <section class="top">
@@ -40,7 +42,11 @@
                     </router-link>
               </div>
           </section>
-          
+
+          <!-- <div v-if="error">{{ error }}</div> -->
+          <div v-for="task in tasks" :key="task.id">
+                
+          </div>
           <section class="tasks">
               <div class="task-group">
                   <span class="material-icons">arrow_drop_down</span>
@@ -72,11 +78,10 @@
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>Task 2
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <!-- <td class="completed">Completed</td> -->
                                 <td class="completed task-group-select">
                                     <select name="" id="" class="status-options">
                                         <option value="" class="options">Completed</option>
@@ -117,7 +122,7 @@
                                 </td>
                                 <td>John Doe</td>
                                 <td>12/12/12</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td>
                                     <span class="material-icons">add_circle_outline</span>
@@ -142,7 +147,53 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import getTasks from '../composables/getTasks'
+import { db } from '../firebase/config'
+
 export default {
+    name: 'Dashboard',
+    // data() {
+    //     return {
+    //         tasks: [],
+    //         error: null
+    //     }
+    // },
+    // created() {
+    //     this.getTasks()
+    // },
+    // methods: {
+    //     getTasks() {
+    //         getTasks()
+    //             .then(tasks => {
+    //                 this.tasks = tasks
+    //             })
+    //             .catch(error => {
+    //                 this.error = error
+    //             })
+    //     }
+    // },
+    // mixins: [getTasks]
+    
+    setup() {
+        const tasks = ref([])
+        const error = ref(null)
+        const getTasks = () => {
+            getTasks()
+                .then(tasks => {
+                    this.tasks = tasks
+                })
+                .catch(error => {
+                    this.error = error
+                })
+        }
+        return {
+            tasks,
+            error,
+            getTasks
+        }
+
+    }
 
 }
 </script>

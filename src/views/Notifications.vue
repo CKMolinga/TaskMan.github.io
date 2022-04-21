@@ -83,7 +83,14 @@ export default {
   z-index: 101;
   padding: 30px;
   border-radius: 0 55px 0 0;
+  overflow-y: auto;
 }
+
+/* custom style scrollbar  */
+::-webkit-scrollbar {
+  width: 100px;
+}
+
 .modal-content {
   display: flex;
   flex-direction: column;

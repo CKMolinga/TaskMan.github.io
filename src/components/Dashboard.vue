@@ -33,7 +33,7 @@
 
           <section class="top">
               <div class="add-task">
-                  <router-link to="/add-task">New Task</router-link>
+                  <router-link to="/add-task">New Project</router-link>
               </div>
               <div class="logout-trigger">
                     <router-link to="/login">Logout</router-link>
@@ -43,20 +43,6 @@
               </div>
           </section>
 
-          <!-- <div v-if="error">{{ error }}</div> -->
-          <div v-for="task in tasks" :key="task.id">
-              <div class="task">
-                  <div class="task-title">
-                      <h3>{{ task.title }}</h3>
-                  </div>
-                  <div class="task-description">
-                      <p>{{ task.description }}</p>
-                  </div>
-                  <div class="task-status">
-                      <span class="material-icons">check</span>
-                  </div>
-              </div>
-          </div>
           <div v-for="task in tasks" :key="task.id">
           <section class="tasks">
               <div class="task-group">
@@ -80,60 +66,18 @@
                                 </td>
                                 <td class="in-progress task-group-select">
                                     <select name="" id="" class="status-options">
-                                        <option value="" class="options">In progress</option>
-                                        <option value="" class="options">Completed</option>
-                                        <option value="" class="options">Pending</option>
-                                        <option value="" class="options">Cancelled</option>
+                                        <option value="" class="options"> {{ task.status[0] }} </option>
+                                        <option value="" class="options">{{ task.status[1] }}</option>
+                                        <option value="" class="options">{{ task.status[2] }}</option>
+                                        <option value="" class="options">{{ task.status[3] }}</option>
                                     </select>
                                 </td>
-                                <td>John Doe</td>
-                                <td>12/12/12</td>
+                                <td>
+                                    {{ task.assignedTo }}
+                                    <span class="material-icons assign-new-member">add_circle_outline</span>
+                                    </td>
+                                <td>{{ task.dueDate }}</td>
                             </tr>
-                            <!-- <tr>
-                                <td>Task 2
-                                    <span class="material-icons comment">comment</span>
-                                </td>
-                                <td class="completed task-group-select">
-                                    <select name="" id="" class="status-options">
-                                        <option value="" class="options">Completed</option>
-                                        <option value="" class="options">In progress</option>
-                                         <option value="" class="options">Pending</option>
-                                        <option value="" class="options">Cancelled</option>
-                                    </select>
-                                </td>
-                                <td>John Doe</td>
-                                <td>12/12/12</td>
-                            </tr>
-                            <tr>
-                                <td>Task 3
-                                    <span class="material-icons comment">comment</span>
-                                </td>
-                                <td class="pending task-group-select">
-                                    <select name="" id="" class="status-options">
-                                        <option value="" class="options">Pending</option>
-                                        <option value="" class="options">Completed</option>
-                                        <option value="" class="options">In progress</option>
-                                        <option value="" class="options">Cancelled</option>
-                                    </select>
-                                </td>
-                                <td>John Doe</td>
-                                <td>12/12/12</td>
-                            </tr>
-                            <tr>
-                                <td>Task 4
-                                    <span class="material-icons comment">comment</span>
-                                </td>
-                                <td class="cancelled task-group-select">
-                                    <select name="" id="" class="status-options">
-                                        <option value="" class="options">Cancelled</option>
-                                        <option value="" class="options">Completed</option>
-                                        <option value="" class="options">In progress</option>
-                                         <option value="" class="options">Pending</option>
-                                    </select>
-                                </td>
-                                <td>John Doe</td>
-                                <td>12/12/12</td>
-                            </tr> -->
                             <tr>
                                 <td>
                                     <span class="material-icons">add_circle_outline</span>
@@ -173,21 +117,6 @@ export default {
         load()
 
         return { tasks, error }
-
-        // const getTasks = () => {
-        //     getTasks()
-        //         .then(tasks => {
-        //             this.tasks = tasks
-        //         })
-        //         .catch(error => {
-        //             this.error = error
-        //         })
-        // }
-        // return {
-        //     tasks,
-        //     error,
-        //     getTasks
-        // }
 
     }
 
@@ -359,6 +288,11 @@ table td {
 td .material-icons {
     font-size: 1.5rem;
     margin-right: 0.5rem;
+    cursor: pointer;
+}
+td .assign-new-member {
+    font-size: 1.5rem;
+    margin-left: 1.5rem;
     cursor: pointer;
 }
 

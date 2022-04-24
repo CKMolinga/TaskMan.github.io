@@ -27,6 +27,7 @@ const getTasks = () => {
     return { tasks, error, load }
 }
 
+
 // export const getTask = (id) => {
 //     return db.collection('tasks').doc(id).get()
 //         .then(doc => {

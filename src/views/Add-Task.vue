@@ -9,20 +9,20 @@
                 <router-link to="/dashboard"><span class="close">&times;</span></router-link>
           </div>
           <div class="modal-body">
-            <form action="">
+            <form action="" @submit.prevent="addTask">
               <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control">
+                <label for="name">Title</label>
+                <input type="text" name="name" id="name" class="form-control" v-model="title">
               </div>
               <div class="form-group">
                 <label for="description">Description</label>
-                <textarea name="description" id="" cols="30" rows="10"></textarea>
+                <textarea name="description" id="" cols="30" rows="10" v-model="description"></textarea>
               </div>
               <div class="form-group">
                 <label for="due-date">Due Date</label>
-                <input type="date" name="due-date" id="date" class="form-control">
+                <input type="date" name="due-date" id="date" class="form-control" v-model="dueDate">
               </div>
-              <button class="btn" type="submit">Invite</button>
+              <button class="btn" type="submit">Add</button>
             </form>
           </div>
         </div>
@@ -31,11 +31,51 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { db, timestamp } from '../firebase/config'
 import Dashboard from '../components/Dashboard.vue'
 
 export default {
   name: 'Add-Task',
-  components: {Dashboard}
+  components: {Dashboard},
+
+  setup() {
+    const router = useRouter()
+    const assignedTo = ref([])
+    const dueDate = ref(null)
+    const status = ref([])
+    const title = ref(null)
+    const description = ref(null)
+    const date = ref(null)
+
+    const addTask = async () => {
+      const task = {
+        id: Math.floor(Math.random() * 10000),
+        title: title.value,
+        description: description.value,
+        assignedTo: assignedTo.value,
+        dueDate: dueDate.value.toString(),
+        status: status.value,
+        createdAt: timestamp()
+      }
+
+      const res =  await db.collection('tasks').add(task)
+      
+      router.push('/dashboard')
+  
+    }
+
+    return {
+      assignedTo,
+      dueDate,
+      status,
+      title,
+      description,
+      date,
+      addTask
+    }
+  }
 }
 </script>
 

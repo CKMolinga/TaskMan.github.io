@@ -1,37 +1,46 @@
+import { ref } from 'vue'
 // Get tasks from firestore database by using the following snippet:
-import { db } from '../firebase/config';
+import { db } from '../firebase/config'
 
-export const getTasks = () => {
-    return db.collection('tasks').get()
-        .then(snapshot => {
-            const tasks = [];
-            snapshot.forEach(doc => {
-                tasks.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            return tasks;
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
 
-export const getTask = (id) => {
-    return db.collection('tasks').doc(id).get()
-        .then(doc => {
-            if (doc.exists) {
+const getTasks = () => {
+
+    const tasks = ref([])
+    const error = ref(null)
+
+    const load = async() => {
+        try {
+            const res = await db.collection('tasks')
+                .orderBy('createdAt', 'desc')
+                .get()
+
+            tasks.value = res.docs.map(doc => {
                 return {
-                    id: doc.id,
-                    ...doc.data()
-                };
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
+                    ...doc.data(),
+                    id: doc.id
+                }
+            })
+        } catch (err) {
+            error.value = err.message
+        }
+    }
+    return { tasks, error, load }
+}
+
+// export const getTask = (id) => {
+//     return db.collection('tasks').doc(id).get()
+//         .then(doc => {
+//             if (doc.exists) {
+//                 return {
+//                     id: doc.id,
+//                     ...doc.data()
+//                 };
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         });
+// };
 
 // export const addTask = (task) => {
 //     return db.collection('tasks').add({
@@ -224,15 +233,4 @@ export const getTask = (id) => {
 // };
 //
 
-export default {
-    getTasks,
-    getTask,
-    // addTask,
-    // updateTask,
-    // deleteTask,
-    // getMembers,
-    // getMember,
-    // addMember,
-    // updateMember,
-    // deleteMember,
-}
+export default getTasks

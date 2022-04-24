@@ -45,12 +45,23 @@
 
           <!-- <div v-if="error">{{ error }}</div> -->
           <div v-for="task in tasks" :key="task.id">
-                
+              <div class="task">
+                  <div class="task-title">
+                      <h3>{{ task.title }}</h3>
+                  </div>
+                  <div class="task-description">
+                      <p>{{ task.description }}</p>
+                  </div>
+                  <div class="task-status">
+                      <span class="material-icons">check</span>
+                  </div>
+              </div>
           </div>
+          <div v-for="task in tasks" :key="task.id">
           <section class="tasks">
               <div class="task-group">
                   <span class="material-icons">arrow_drop_down</span>
-                  <h3>Project 1</h3>
+                  <h3>{{ task.name }}</h3>
               </div>
               <div class="tasks-table">
                     <table>
@@ -64,7 +75,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Task 1
+                                <td>{{ task.title }}
                                     <span class="material-icons comment">comment</span>
                                 </td>
                                 <td class="in-progress task-group-select">
@@ -141,6 +152,7 @@
                     </table>
               </div>
           </section>
+            </div>
 
       </main>
   </div>
@@ -153,45 +165,29 @@ import { db } from '../firebase/config'
 
 export default {
     name: 'Dashboard',
-    // data() {
-    //     return {
-    //         tasks: [],
-    //         error: null
-    //     }
-    // },
-    // created() {
-    //     this.getTasks()
-    // },
-    // methods: {
-    //     getTasks() {
-    //         getTasks()
-    //             .then(tasks => {
-    //                 this.tasks = tasks
-    //             })
-    //             .catch(error => {
-    //                 this.error = error
-    //             })
-    //     }
-    // },
-    // mixins: [getTasks]
     
     setup() {
-        const tasks = ref([])
-        const error = ref(null)
-        const getTasks = () => {
-            getTasks()
-                .then(tasks => {
-                    this.tasks = tasks
-                })
-                .catch(error => {
-                    this.error = error
-                })
-        }
-        return {
-            tasks,
-            error,
-            getTasks
-        }
+        
+        const { tasks, error, load } = getTasks()
+
+        load()
+
+        return { tasks, error }
+
+        // const getTasks = () => {
+        //     getTasks()
+        //         .then(tasks => {
+        //             this.tasks = tasks
+        //         })
+        //         .catch(error => {
+        //             this.error = error
+        //         })
+        // }
+        // return {
+        //     tasks,
+        //     error,
+        //     getTasks
+        // }
 
     }
 

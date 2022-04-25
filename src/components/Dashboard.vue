@@ -33,7 +33,7 @@
 
           <section class="top">
               <div class="add-task">
-                  <router-link to="/add-task">New Project</router-link>
+                  <router-link to="/add-task">Add Task</router-link>
               </div>
               <div class="logout-trigger">
                     <router-link to="/login">Logout</router-link>
@@ -57,6 +57,8 @@
                                 <th>Status</th>
                                 <th>Assigned to</th>
                                 <th>Due date</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +74,12 @@
                                     <span class="material-icons assign-new-member">add_circle_outline</span>
                                     </td>
                                 <td>{{ task.dueDate }}</td>
+                                <td>
+                                    <span class="material-icons edit">edit</span>
+                                </td>
+                                <td>
+                                    <span class="material-icons delete" @click="handleDelete">delete</span>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -102,21 +110,34 @@
 <script>
 import { ref } from 'vue'
 import { db } from '../firebase/config'
+import { useRoute, useRouter } from 'vue-router'
 
 
 import getTasks from '../composables/getTasks'
+import getSingleTask from '../composables/getSingleTask'
 
 
 export default {
     name: 'Dashboard',
     
     setup() {
+        const route = useRoute()
+        const router = useRouter()
         
         const { tasks, error, load } = getTasks()
+        const { task, taskError, taskLoad } = getSingleTask()
 
         load()
+        taskLoad()
 
-        return { tasks, error }
+        const handleDelete = async () => {
+            const { id } = route.params
+            await db.collection('tasks').doc(id).delete()
+
+            router.push('/dashboard')
+        }
+
+        return { tasks, task, error, taskError, handleDelete }
 
     }
 
@@ -332,5 +353,8 @@ select option {
 a {
     text-decoration: none;
     color: #fff;
+}
+span.delete {
+    color: rgba(212, 41, 41, 0.938);
 }
 </style>

@@ -20,13 +20,13 @@ const getTasks = () => {
                     id: doc.id
                 }
             })
+
         } catch (err) {
             error.value = err.message
         }
     }
     return { tasks, error, load }
 }
-
 
 // export const getTask = (id) => {
 //     return db.collection('tasks').doc(id).get()

@@ -5,19 +5,25 @@
         <!-- Create modal -->
         <div class="modal-content">
           <div class="modal-header">
-            <h3>Add New Task</h3>
+            <h3>Add New Project</h3>
                 <router-link to="/dashboard"><span class="close">&times;</span></router-link>
           </div>
           <div class="modal-body">
             <form action="" @submit.prevent="addTask">
-              <div class="form-group">
+              <div class="form-group flex">
                 <label for="name">Title</label>
                 <input type="text" name="name" id="name" class="form-control" v-model="title">
-              </div>
-              <div class="form-group">
                 <label for="description">Description</label>
                 <textarea name="description" id="" cols="30" rows="10" v-model="description"></textarea>
               </div>
+              
+              <select name="" id="" v-model="status">
+                <option value="" selected disabled hidden>status</option>
+                <option value="In Progress">In Progres</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
               <div class="form-group">
                 <label for="due-date">Due Date</label>
                 <input type="date" name="due-date" id="date" class="form-control" v-model="dueDate">
@@ -44,10 +50,11 @@ export default {
     const router = useRouter()
     const assignedTo = ref([])
     const dueDate = ref(null)
-    const status = ref([])
+    const status = ref(['In progress', 'Completed', 'Pending', 'Cancelled'])
     const title = ref(null)
     const description = ref(null)
     const date = ref(null)
+    const name = ref(null)
 
     const addTask = async () => {
       const task = {
@@ -57,6 +64,7 @@ export default {
         assignedTo: assignedTo.value,
         dueDate: dueDate.value.toString(),
         status: status.value,
+        name: name.value,
         createdAt: timestamp()
       }
 
@@ -73,6 +81,7 @@ export default {
       title,
       description,
       date,
+      name,
       addTask
     }
   }
@@ -98,7 +107,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
   background-color: #292F4C;
   color: #fff;
   z-index: 101;
@@ -138,7 +147,6 @@ export default {
 .modal-body form {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .modal-body form .form-group {
   display: flex;
@@ -149,6 +157,7 @@ export default {
 .modal-body form .form-group label {
   margin: 0;
   padding-bottom: 5px;
+  padding-top: 2px;
 }
 .modal-body form .form-group input {
   width: 100%;
@@ -157,6 +166,23 @@ export default {
   border: 1px solid #e5e5e5;
   background: transparent;
   color: #fff;
+}
+
+select {
+  width: 100% !important;
+  padding: 10px;
+  margin: 0 !important;
+  border-radius: 5px;
+  border: 1px solid #e5e5e5;
+  background: #292F4C;
+  color: #fff;
+  outline: none;
+  height: 45px;
+  line-height: 20px;
+}
+select option {
+  color: #fff;
+  background: #292F4C;
 }
 .modal-body form .form-group input:focus {
   outline: none;
@@ -171,7 +197,7 @@ export default {
   resize: none;
 }
 button.btn {
-  width: 50%;
+  width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: none;

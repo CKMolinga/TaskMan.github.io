@@ -43,11 +43,11 @@
               </div>
           </section>
 
-          <div v-for="task in tasks" :key="task.id">
+          <div>
           <section class="tasks">
               <div class="task-group">
-                  <span class="material-icons">arrow_drop_down</span>
-                  <h3>{{ task.name }}</h3>
+                  <!-- Todo: Rename to {User's-name Tasklist}  -->
+                  <h3>Task List</h3>
               </div>
               <div class="tasks-table">
                     <table>
@@ -60,17 +60,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr v-for="task in tasks" :key="task.id">
                                 <td>{{ task.title }}
                                     <span class="material-icons comment">comment</span>
                                 </td>
-                                <td class="in-progress task-group-select">
-                                    <select name="" id="" class="status-options">
-                                        <option value="" class="options"> {{ task.status[0] }} </option>
-                                        <option value="" class="options">{{ task.status[1] }}</option>
-                                        <option value="" class="options">{{ task.status[2] }}</option>
-                                        <option value="" class="options">{{ task.status[3] }}</option>
-                                    </select>
+                                <td class="task-group-select" v-bind:class="{ 'completed': task.status === 'Completed', 'in-progress': task.status === 'In Progress', 'pending': task.status === 'Pending', 'cancelled': task.status === 'Cancelled' }">
+                                    {{ task.status }}
                                 </td>
                                 <td>
                                     {{ task.assignedTo }}
@@ -80,16 +75,18 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="material-icons">add_circle_outline</span>
+                                    <router-link to="/add-task">
+                                        <span class="material-icons">add_circle_outline</span>
+                                    </router-link>
                                 </td>
                                 <td>
-                                    <span class="material-icons">add_circle_outline</span>
+                                    <!-- <span class="material-icons">add_circle_outline</span> -->
                                 </td>
                                 <td>
-                                    <span class="material-icons">add_circle_outline</span>
+                                    <!-- <span class="material-icons">add_circle_outline</span> -->
                                 </td>
                                 <td>
-                                    <span class="material-icons">add_circle_outline</span>
+                                    <!-- <span class="material-icons">add_circle_outline</span> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -103,9 +100,12 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import getTasks from '../composables/getTasks'
+import { ref } from 'vue'
 import { db } from '../firebase/config'
+
+
+import getTasks from '../composables/getTasks'
+
 
 export default {
     name: 'Dashboard',
@@ -328,5 +328,9 @@ td.in-progress {
 }
 select option {
     color: #292F4C;
+}
+a {
+    text-decoration: none;
+    color: #fff;
 }
 </style>

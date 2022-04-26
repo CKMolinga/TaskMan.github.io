@@ -40,9 +40,10 @@ setup() {
 
   const handleSubmit = async () => {
     await signup(email.value, password.value, displayName.value)
-    console.log('signup success')
-
-    router.push('/login')
+    if (!error.value) {
+      console.log('signup success')
+      router.push('/login')
+    }
   }
 
   return {

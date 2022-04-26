@@ -12,6 +12,8 @@
                 <input type="email" name="email" id="email" placeholder="Enter your email" required v-model="email">
               <label for="name">Password <span class="required">*</span></label>
                 <input type="password" name="password" id="password" placeholder="Enter your password" required v-model="password">
+
+              <div class="error">{{ error }}</div>
               <button type="submit" class="btn">Register</button>
 
               <p class="hint">Already have an account? <span class="hint"><router-link to="Login">Login</router-link></span></p>
@@ -132,6 +134,13 @@ button {
 }
 span.hint a {
   color: #42B883;
+}
+.error {
+  color: red;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 @media screen and (max-width: 960px) {

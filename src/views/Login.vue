@@ -5,11 +5,12 @@
       <div class="right-flex">
           <img src="../assets/logo.png" alt="logo" class="logo">
           <h3>Personal Information</h3>
-          <form action="" method="">
+          <form action="" method="" @submit.prevent="handleSubmit">
               <label for="name">Username or Email <span class="required">*</span></label>
-                <input type="email" name="email" id="email" placeholder="Enter your username or email" required>
+                <input type="email" name="email" id="email" placeholder="Enter your username or email" required v-model="email">
               <label for="name">Password <span class="required">*</span></label>
-                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required v-model="password">
+              <div class="error"> {{ error }}</div>
               <button type="submit" class="btn">Login</button>
               <p class="hint">Don't have an account yet? <span class="hint"><router-link to="Signup">Sign up</router-link></span></p>
           </form>
@@ -18,8 +19,35 @@
 </template>
 
 <script>
-export default {
+import { ref } from 'vue'
+import useLogin from '../composables/useLogin'
 
+export default {
+  setup() {
+    // refs 
+    const email = ref('')
+    const password = ref('')
+
+    const { error, login } = useLogin()
+
+    const handleSubmit = async () => {
+      try {
+        await login(email.value, password.value)
+        if (!error) {
+          console.log('login success')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    return {
+      email,
+      password,
+      error,
+      handleSubmit
+    }
+  }
 }
 </script>
 
@@ -106,6 +134,13 @@ button {
 }
 span.hint a {
   color: #42B883;
+}
+.error {
+  color: red;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 @media screen and (max-width: 960px) {
 .right-flex {

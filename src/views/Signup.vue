@@ -15,6 +15,7 @@
               <label for="name">Confirm Password <span class="required">*</span></label>
                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm your password" required>
               <button type="submit" class="btn">Register</button>
+
               <p class="hint">Already have an account? <span class="hint"><router-link to="Login">Login</router-link></span></p>
           </form>
       </div>
@@ -22,7 +23,31 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import useSignup from '../composables/useSignup'
+
 export default {
+setup() {
+  const { error, signup } = useSignup()
+
+  // refs
+  const displayName = ref('')
+  const email = ref('')
+  const password = ref('')
+
+  const handleSubmit = async () => {
+    await signup(email.value, password.value, displayName.value)
+  }
+
+  return {
+    displayName,
+    email,
+    password,
+    error,
+    handleSubmit
+  }
+
+}
 
 }
 </script>

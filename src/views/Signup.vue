@@ -5,15 +5,13 @@
       <div class="right-flex">
           <img src="../assets/logo.png" alt="logo" class="logo">
           <h3>Personal Information</h3>
-          <form action="" method="">
+          <form action="" method="" @submit.prevent="handleSubmit">
               <label for="name">Fullname <span class="required">*</span></label>
-                <input type="text" name="name" id="name" placeholder="Enter your fullname" required>
+                <input type="text" name="name" id="name" placeholder="Enter your fullname" required v-model="displayName">
               <label for="name">Email <span class="required">*</span></label>
-                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required v-model="email">
               <label for="name">Password <span class="required">*</span></label>
-                <input type="password" name="password" id="password" placeholder="Enter your password" required>
-              <label for="name">Confirm Password <span class="required">*</span></label>
-                <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm your password" required>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required v-model="password">
               <button type="submit" class="btn">Register</button>
 
               <p class="hint">Already have an account? <span class="hint"><router-link to="Login">Login</router-link></span></p>
@@ -37,6 +35,7 @@ setup() {
 
   const handleSubmit = async () => {
     await signup(email.value, password.value, displayName.value)
+    console.log('signup success')
   }
 
   return {

@@ -36,9 +36,9 @@
                   <router-link to="/add-task">Add Task</router-link>
               </div>
               <div class="logout-trigger">
-                    <router-link to="/login">Logout</router-link>
+                    <router-link to="/login" @click="handleClick">Logout</router-link>
                     <router-link to="/login">
-                        <span class="material-icons">logout</span>
+                        <span class="material-icons" @click="handleClick">logout</span>
                     </router-link>
               </div>
           </section>
@@ -115,6 +115,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import getTasks from '../composables/getTasks'
 import getSingleTask from '../composables/getSingleTask'
+import useLogout from '../composables/useLogout'
 
 
 export default {
@@ -126,9 +127,17 @@ export default {
         
         const { tasks, error, load } = getTasks()
         const { task, taskError, taskLoad } = getSingleTask()
+        const { logout } = useLogout()
 
         load()
         taskLoad()
+
+        const handleClick = async () => {
+            await logout()
+            if (!error.value) {
+                router.push('/login')
+            }
+        }
 
         const handleDelete = async () => {
             const { id } = route.params
@@ -137,7 +146,7 @@ export default {
             router.push('/dashboard')
         }
 
-        return { tasks, task, error, taskError, handleDelete }
+        return { tasks, task, error, taskError, handleClick, handleDelete }
 
     }
 

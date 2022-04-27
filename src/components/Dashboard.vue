@@ -26,6 +26,7 @@
           </ul>
           <router-link to="/dashboard">
             <div class="profile-img"></div>
+            <h4>Hello {{ user.displayName }}</h4>
           </router-link>
       </nav>
 
@@ -35,7 +36,7 @@
               <div class="add-task">
                   <router-link to="/add-task">Add Task</router-link>
               </div>
-              <div class="logout-trigger">
+              <div class="logout-trigger" v-if="user">
                     <router-link to="/login" @click="handleClick">Logout</router-link>
                     <router-link to="/login">
                         <span class="material-icons" @click="handleClick">logout</span>
@@ -116,6 +117,7 @@ import { useRoute, useRouter } from 'vue-router'
 import getTasks from '../composables/getTasks'
 import getSingleTask from '../composables/getSingleTask'
 import useLogout from '../composables/useLogout'
+import getUser from '../composables/getUser'
 
 
 export default {
@@ -128,6 +130,7 @@ export default {
         const { tasks, error, load } = getTasks()
         const { task, taskError, taskLoad } = getSingleTask()
         const { logout } = useLogout()
+        const { user } = getUser()
 
         load()
         taskLoad()
@@ -146,7 +149,7 @@ export default {
             router.push('/dashboard')
         }
 
-        return { tasks, task, error, taskError, handleClick, handleDelete }
+        return { tasks, task, error, taskError, handleClick, handleDelete, user }
 
     }
 

@@ -1,25 +1,18 @@
 <template>
-  <Dashboard></Dashboard>
+  <!-- <Dashboard></Dashboard> -->
   <div class="overlay">
       <div class="modal">
         <!-- Create modal -->
         <div class="modal-content">
           <div class="modal-header">
-            <h3>Add New Team Member</h3>
+            <h3>Are you sure you want to logout?</h3>
             <router-link to="/dashboard"><span class="close">&times;</span></router-link>
           </div>
           <div class="modal-body">
             <form action="">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="email">Email
-                </label>
-                <input type="email" name="email" id="email" class="form-control">
-              </div>
-              <button class="btn" type="submit">Invite</button>
+              <div class="form-group"></div>
+                <button type="submit" class="btn btn-primary" @click="handleClick">Yes</button>
+                <button type="submit" class="btn btn-primary" @click="handleSubmit">No</button>
             </form>
           </div>
         </div>
@@ -28,11 +21,34 @@
 </template>
 
 <script>
+
+import { useRouter } from 'vue-router'
+
+import useLogout from '../composables/useLogout'
+import getUser from '../composables/getUser'
+
 import Dashboard from '../components/Dashboard.vue'
 
 export default {
-  name: 'Add-Member',
-  components: {Dashboard}
+  name: 'Confirm_Logout',
+  components: {Dashboard},
+
+  setup() {
+        const router = useRouter()
+        
+        const { error, logout } = useLogout()
+        const { user } = getUser()
+
+        const handleClick = async () => {
+            await logout()
+            if (!error.value) {
+                router.push('/login')
+            }
+        }
+
+        return { error, user, handleClick }
+
+    }
 }
 </script>
 

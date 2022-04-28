@@ -9,6 +9,8 @@ import AddMember from '../views/Add-Member.vue'
 import AddTask from '../views/Add-Task.vue'
 import Notifications from '../views/Notifications.vue'
 import Success_signup from '../views/succesful_signup.vue'
+import Confirm_Logout from '../views/Confirm-Logout.vue'
+
 
 const routes = [{
         path: '/',
@@ -59,6 +61,11 @@ const routes = [{
         path: '/success-signup',
         name: 'Success_signup',
         component: Success_signup
+    },
+    {
+        path: '/confirm-logout',
+        name: 'Confirm_Logout',
+        component: Confirm_Logout
     }
 ]
 

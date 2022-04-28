@@ -112,6 +112,7 @@
 import { ref } from 'vue'
 import { db } from '../firebase/config'
 import { useRoute, useRouter } from 'vue-router'
+import { watch } from 'vue'
 
 
 import getTasks from '../composables/getTasks'
@@ -131,6 +132,13 @@ export default {
         const { task, taskError, taskLoad } = getSingleTask()
         const { logout } = useLogout()
         const { user } = getUser()
+
+        // Redirects user to login page if they are not logged in
+        watch(user, () => {
+            if(!user.value) {
+                router.push('/login')
+            }
+        })
 
         load()
         taskLoad()

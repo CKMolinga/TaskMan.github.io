@@ -42,7 +42,7 @@ setup() {
     await signup(email.value, password.value, displayName.value)
     if (!error.value) {
       console.log('signup success')
-      router.push('/login')
+      router.push('/success-signup')
     }
   }
 

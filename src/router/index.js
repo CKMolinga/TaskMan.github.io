@@ -8,6 +8,7 @@ import Dashboard from '../components/Dashboard.vue'
 import AddMember from '../views/Add-Member.vue'
 import AddTask from '../views/Add-Task.vue'
 import Notifications from '../views/Notifications.vue'
+import Success_signup from '../views/succesful_signup.vue'
 
 const routes = [{
         path: '/',
@@ -53,6 +54,11 @@ const routes = [{
         path: '/notifications',
         name: 'Notifications',
         component: Notifications
+    },
+    {
+        path: '/success-signup',
+        name: 'Success_signup',
+        component: Success_signup
     }
 ]
 

@@ -37,9 +37,11 @@
                   <router-link to="/add-task">Add Task</router-link>
               </div>
               <div class="logout-trigger" v-if="user">
-                    <router-link to="/login" @click="handleClick">Logout</router-link>
-                    <router-link to="/login">
+                    <router-link to="/login" @click="handleClick">
+                    <div class="flex-logout-btns">
+                        <span style="margin-right: 8px">Logout</span>
                         <span class="material-icons" @click="handleClick">logout</span>
+                    </div>
                     </router-link>
               </div>
           </section>
@@ -73,14 +75,34 @@
                                 <td>
                                     {{ task.assignedTo }}
                                     <span class="material-icons assign-new-member">add_circle_outline</span>
-                                    </td>
+                                </td>
                                 <td>{{ task.dueDate }}</td>
                                 <td>
                                     <span class="material-icons edit">edit</span>
                                 </td>
                                 <td>
-                                    <span class="material-icons delete" @click="handleDelete">delete</span>
+                                    <span class="material-icons delete" @click="showModal">delete</span>
                                 </td>
+
+                                <!-- CONFIRM LOGOUT OVERLAY  -->
+                                <div class="overlay">
+                                <div class="modal confirm-delete-modal">
+                                    <div class="modal-content">
+                                     <div class="modal-header">
+                                         <span class="close" @click="hideModal">&times;</span>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3>Are you sure you want to Delete?</h3>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <div class="flex-logout-btns">
+                                                <button class="logout-btn" style="margin-right: 8px" @click="hideModal">Cancel</button>
+                                                <button class="logout-btn delete-btn" @click="handleDelete(task)">Delete</button>
+                                            </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
                             </tr>
                             <tr>
                                 <td>
@@ -150,14 +172,25 @@ export default {
             }
         }
 
-        const handleDelete = async () => {
-            const { id } = route.params
-            await db.collection('tasks').doc(id).delete()
-
-            router.push('/dashboard')
+        // show modal
+        const showModal = () => {
+            document.querySelector('.overlay').style.display = 'block'
+            console.log('show modal')
         }
 
-        return { tasks, task, error, taskError, handleClick, handleDelete, user }
+        // hide modal
+        const hideModal = () => {
+            document.querySelector('.overlay').style.display = 'none'
+            console.log('hide modal')
+        }
+
+        const handleDelete = (task) => {
+            db.collection('tasks').doc(task.id).delete()  
+            // window.location.reload()
+            console.log('Task deleted')
+        }
+
+        return { tasks, task, error, taskError, user, handleClick, handleDelete, showModal, hideModal}
 
     }
 
@@ -270,9 +303,9 @@ section.top {
     text-decoration: none;
 }
 .logout-trigger {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     padding: 0.5rem 1rem;
     color: #292F4C;
 }
@@ -280,6 +313,11 @@ section.top {
     color: #292F4C;
     text-decoration: none;
     padding: 0.5rem 0.2rem;
+}
+.flex-logout-btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 section.tasks {
     padding: 0 1rem;
@@ -376,5 +414,90 @@ a {
 }
 span.delete {
     color: rgba(212, 41, 41, 0.938);
+}
+
+/* Overlay background of whole page */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  backdrop-filter: blur(2px);
+  display: none;
+}
+
+/* modal style */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 500px;
+    background-color: #fff;
+    z-index: 101;
+    padding: 30px;
+    border-radius: 5px;
+    color: #000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.modal-content {
+    height: auto;
+    border-radius: 0.2rem;
+    padding: 1rem;
+}
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.modal-header a {
+    text-decoration: none;
+}
+span.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #292F4C;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    cursor: pointer;
+}
+.modal-body {
+    padding: 1rem;
+}
+.modal-body h3 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+.modal-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+}
+.logout-btn {
+    padding: 0.8rem 1.5rem;
+    color: #fff;
+    background-color: #292F4C;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+.logout-btn:hover {
+    transform: scale(1.1);
+}
+.delete-btn {
+    background-color: red;
 }
 </style>

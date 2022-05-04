@@ -10,6 +10,8 @@ import AddTask from '../views/Add-Task.vue'
 import Notifications from '../views/Notifications.vue'
 import Success_signup from '../views/succesful_signup.vue'
 import Confirm_Logout from '../views/Confirm-Logout.vue'
+import updateTask from '../views/Update-Task.vue'
+import Confirm_Delete from '../views/Confirm-Delete.vue'
 
 
 const routes = [{
@@ -66,6 +68,17 @@ const routes = [{
         path: '/confirm-logout',
         name: 'Confirm_Logout',
         component: Confirm_Logout
+    },
+    {
+        path: '/confirm-delete',
+        name: 'Confirm_Delete',
+        component: Confirm_Delete
+    },
+    {
+        path: '/tasks/:id',
+        name: 'UpdateTask',
+        component: updateTask,
+        props: true
     }
 ]
 

@@ -2,14 +2,15 @@
   <Dashboard></Dashboard>
   <div class="overlay">
       <div class="modal">
+        <p>Edit project is is:</p>
         <!-- Create modal -->
-        <div class="modal-content">
+        <!-- <div class="modal-content">
           <div class="modal-header">
             <h3>Add New Project</h3>
                 <router-link to="/dashboard"><span class="close">&times;</span></router-link>
           </div>
           <div class="modal-body">
-            <form action="" @submit.prevent="addTask">
+            <form action="" @submit.prevent="updateTask">
               <div class="form-group flex">
                 <label for="name">Title</label>
                 <input type="text" name="name" id="name" class="form-control" v-model="title">
@@ -28,10 +29,10 @@
                 <label for="due-date">Due Date</label>
                 <input type="date" name="due-date" id="date" class="form-control" v-model="dueDate">
               </div>
-              <button class="btn" type="submit">Add</button>
+              <button class="btn" type="submit">Update</button>
             </form>
           </div>
-        </div>
+        </div> -->
       </div>
   </div>
 </template>
@@ -42,8 +43,9 @@ import { useRouter } from 'vue-router'
 import { db, timestamp } from '../firebase/config'
 import Dashboard from '../components/Dashboard.vue'
 
+// import updateTask from '../composables/updateTask'
+
 export default {
-  name: 'Add-Task',
   components: {Dashboard},
 
   setup() {
@@ -56,7 +58,7 @@ export default {
     const date = ref(null)
     const name = ref(null)
 
-    const addTask = async () => {
+    const updateTask = async () => {
       const task = {
         id: Math.floor(Math.random() * 10000),
         title: title.value,
@@ -68,11 +70,23 @@ export default {
         createdAt: timestamp()
       }
 
-      const res =  await db.collection('tasks').add(task)
+      return db.collection('tasks').doc(task.id).update({
+            ...task,
+            updatedAt: timestamp()
+        })
+        .then(doc => {
+            return {
+                id: doc.id,
+                ...task
+            };
+        })
+        .catch(err => {
+            console.log(err);
+        });
       
-      router.push('/dashboard')
-  
     }
+
+    router.push('/dashboard')
 
     return {
       assignedTo,
@@ -82,7 +96,7 @@ export default {
       description,
       date,
       name,
-      addTask
+      updateTask
     }
   }
 }
@@ -98,7 +112,6 @@ export default {
   height: 100%;
   background-color: #e5e5e5af;
   z-index: 100;
-  backdrop-filter: blur(5px);
 }
 
 /* modal style */

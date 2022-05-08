@@ -14,7 +14,7 @@
                     </router-link>
                 </li>
                 <li class="sidebar-menu__item menu-icon">
-                    <router-link to="/Add-Member" class="sidebar-menu__link">
+                    <router-link to="/add-member" class="sidebar-menu__link">
                         <span class="material-icons">people</span>
                     </router-link>
                 </li>
@@ -50,7 +50,7 @@
           <section class="tasks">
               <div class="task-group">
                   <!-- Todo: Rename to {User's-name Tasklist}  -->
-                  <h3>Task List</h3>
+                  <h3> {{ user.displayName }}'s Task List</h3>
               </div>
               <div class="tasks-table">
                     <table>
@@ -65,7 +65,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="task in tasks" :key="task.id">
+                            <tr v-for="task in computedTask" :key="task.id">
                                 <td>{{ task.title }}
                                     <span class="material-icons comment">comment</span>
                                 </td>
@@ -81,28 +81,31 @@
                                     <span class="material-icons edit">edit</span>
                                 </td>
                                 <td>
-                                    <span class="material-icons delete" @click="showModal">delete</span>
-                                </td>
+                                    <span class="material-icons delete" @click="callDeleteTask(task)">delete</span>
+
+                                    
 
                                 <!-- CONFIRM LOGOUT OVERLAY  -->
                                 <div class="overlay">
                                 <div class="modal confirm-delete-modal">
                                     <div class="modal-content">
                                      <div class="modal-header">
-                                         <span class="close" @click="hideModal">&times;</span>
+                                         <span class="close" @click="toggleModal">&times;</span>
                                     </div>
                                     <div class="modal-body">
                                         <h3>Are you sure you want to Delete?</h3>
                                     </div>
                                     <div class="modal-footer">
                                             <div class="flex-logout-btns">
-                                                <button class="logout-btn" style="margin-right: 8px" @click="hideModal">Cancel</button>
-                                                <button class="logout-btn delete-btn" @click="handleDelete(task)">Delete</button>
+                                                <button class="logout-btn" style="margin-right: 8px" @click="toggleModal">Cancel</button>
+                                                <button class="logout-btn delete-btn" @click="handleDelete()">Delete</button>
                                             </div>
                                     </div>
                                     </div>
                                 </div>
                                 </div>
+
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -131,8 +134,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { db } from '../firebase/config'
+import { deleteDoc } from 'firebase/firestore'
 import { useRoute, useRouter } from 'vue-router'
 import { watch } from 'vue'
 
@@ -149,8 +153,8 @@ export default {
     setup() {
         const route = useRoute()
         const router = useRouter()
-        
-        const { tasks, error, load } = getTasks()
+        let taskToBeDeleted = {};
+        let { tasks, error, load } = getTasks()
         const { task, taskError, taskLoad } = getSingleTask()
         const { logout } = useLogout()
         const { user } = getUser()
@@ -162,8 +166,11 @@ export default {
             }
         })
 
+        let computedTask = computed(() => {
+              return tasks.value;
+        })
+
         load()
-        taskLoad()
 
         const handleClick = async () => {
             await logout()
@@ -172,25 +179,28 @@ export default {
             }
         }
 
-        // show modal
-        const showModal = () => {
-            document.querySelector('.overlay').style.display = 'block'
-            console.log('show modal')
+        // toggle modal 
+        const toggleModal = () => {
+            const modal = document.querySelector('.overlay')
+            modal.classList.toggle('show-modal')
+            taskToBeDeleted = {}; 
         }
 
-        // hide modal
-        const hideModal = () => {
-            document.querySelector('.overlay').style.display = 'none'
-            console.log('hide modal')
+         const callDeleteTask = (task) => {
+            const modal = document.querySelector('.overlay')
+            modal.classList.toggle('show-modal')
+            taskToBeDeleted = task;
         }
 
-        const handleDelete = (task) => {
-            db.collection('tasks').doc(task.id).delete()  
-            // window.location.reload()
-            console.log('Task deleted')
+        // delete task
+        const handleDelete = () => {
+            console.log('Task to be deleted ', taskToBeDeleted);
+             db.collection('tasks').doc(taskToBeDeleted?.id).delete()
+             tasks = getTasks().tasks;
+             toggleModal()
         }
 
-        return { tasks, task, error, taskError, user, handleClick, handleDelete, showModal, hideModal}
+        return { tasks, task, error, taskError, user, handleClick, handleDelete, toggleModal,callDeleteTask,computedTask }
 
     }
 
@@ -427,6 +437,10 @@ span.delete {
   z-index: 100;
   backdrop-filter: blur(2px);
   display: none;
+}
+
+.show-modal {
+    display: block;
 }
 
 /* modal style */

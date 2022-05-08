@@ -12,12 +12,12 @@
             <form action="">
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control" v-model="name">
               </div>
               <div class="form-group">
                 <label for="email">Email
                 </label>
-                <input type="email" name="email" id="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control" v-model="email">
               </div>
               <button class="btn" type="submit">Invite</button>
             </form>
@@ -28,11 +28,41 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { db, timestamp } from '../firebase/config'
+
 import Dashboard from '../components/Dashboard.vue'
 
 export default {
   name: 'Add-Member',
-  components: {Dashboard}
+  components: {Dashboard},
+
+  setup() {
+    const router = useRouter()
+    const assignedTask = ref([])
+    const name = ref(null)
+    const email = ref(null)
+
+    const addMember = async () => {
+      const member = await db.collection('members').add({
+        name: name.value,
+        email: email.value,
+        createdAt: timestamp()
+      })
+
+      console.log(member)
+      router.push('/dashboard')
+  }
+
+  return {
+    name,
+    email,
+    addMember
+  }
+
+}
+
 }
 </script>
 

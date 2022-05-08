@@ -40,6 +40,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { db, timestamp } from '../firebase/config'
+
 import Dashboard from '../components/Dashboard.vue'
 
 export default {

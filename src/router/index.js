@@ -13,6 +13,19 @@ import Confirm_Logout from '../views/Confirm-Logout.vue'
 import updateTask from '../views/Update-Task.vue'
 import Confirm_Delete from '../views/Confirm-Delete.vue'
 
+//firebase imports
+import { dbAuth } from '../firebase/config'
+
+const requireAuth = (to, from, next) => {
+    let user = dbAuth.currentUser
+    if (!user) {
+        // redirect to login page
+        next('/login')
+    } else {
+        next()
+    }
+}
+
 
 const routes = [{
         path: '/',
@@ -42,37 +55,31 @@ const routes = [{
     {
         path: '/dashboard',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
+        beforeEnter: requireAuth
     },
     {
         path: '/add-member',
         name: 'AddMember',
-        component: AddMember
+        component: AddMember,
+        beforeEnter: requireAuth
     },
     {
         path: '/add-task',
         name: 'AddTask',
-        component: AddTask
+        component: AddTask,
+        beforeEnter: requireAuth
     },
     {
         path: '/notifications',
         name: 'Notifications',
-        component: Notifications
+        component: Notifications,
+        beforeEnter: requireAuth
     },
     {
         path: '/success-signup',
         name: 'Success_signup',
         component: Success_signup
-    },
-    {
-        path: '/confirm-logout',
-        name: 'Confirm_Logout',
-        component: Confirm_Logout
-    },
-    {
-        path: '/confirm-delete',
-        name: 'Confirm_Delete',
-        component: Confirm_Delete
     },
     {
         path: '/tasks/:id',

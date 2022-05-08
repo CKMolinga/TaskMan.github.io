@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-// Get tasks from firestore database by using the following snippet:
 import { db } from '../firebase/config'
 
 

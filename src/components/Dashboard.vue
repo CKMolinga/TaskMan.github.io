@@ -66,7 +66,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="task in computedTask" :key="task.id">
-                                <td>{{ task.title }}
+                                <td class="flex-description">
+                                    <span>{{ task.title }}</span>
                                     <span class="material-icons comment">comment</span>
                                 </td>
                                 <td class="task-group-select" v-bind:class="{ 'completed': task.status === 'Completed', 'in-progress': task.status === 'In Progress', 'pending': task.status === 'Pending', 'cancelled': task.status === 'Cancelled' }">
@@ -175,6 +176,7 @@ export default {
         const handleClick = async () => {
             await logout()
             if (!error.value) {
+                console.log("Logged out")
                 router.push('/login')
             }
         }
@@ -384,11 +386,16 @@ td .assign-new-member {
     margin-left: 1.5rem;
     cursor: pointer;
 }
-
+td.flex-description {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0;
+    border-right: 0;
+    border-left: 0;
+}
 /* push comment icons to right  */
 td .comment {
-    margin-left: 5rem;
-    text-align: right;
+    /* margin-left: 2rem; */
 }
 /* Red background color to indicate a cancelled task */
 td.cancelled {
@@ -514,4 +521,64 @@ span.close {
 .delete-btn {
     background-color: red;
 }
+
+/* responsive design */
+/* @media (max-width: 768px) {
+    .task-group {
+        flex-direction: column;
+    }
+    .task-group h3 {
+        margin-right: 0;
+    }
+    .task-group span {
+        margin-right: 0;
+    }
+    .task-group-select {
+        display: none;
+    }
+    .tasks-table {
+        flex-direction: column;
+    }
+    .tasks-table th {
+        display: none;
+    }
+    .tasks-table td {
+        display: block;
+        width: 100%;
+        border: none;
+        padding: 0;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #292F4C;
+        border-radius: 0.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .tasks-table td:last-child {
+        margin-bottom: 0;
+    }
+    .tasks-table td .material-icons {
+        font-size: 1.5rem;
+        margin-right: 0;
+        cursor: pointer;
+    }
+    .tasks-table td .assign-new-member {
+        font-size: 1.5rem;
+        margin-left: 0;
+        cursor: pointer;
+    }
+    .tasks-table td .comment {
+        margin-left: 0;
+        text-align: left;
+    }
+    .task-group-select select {
+        display: none;
+    }
+    .task-group-select span {
+        display: none;
+    }
+    } */
+    
+
 </style>

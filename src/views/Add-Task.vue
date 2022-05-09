@@ -12,19 +12,19 @@
             <form action="" @submit.prevent="addTask">
               <div class="form-group flex">
                 <label for="name">Title</label>
-                <input type="text" name="name" id="name" class="form-control" v-model="title">
+                <input type="text" name="name" id="name" class="form-control" v-model="title" placeholder="Name this task">
                 <label for="description">Description</label>
-                <textarea name="description" id="" cols="30" rows="10" v-model="description"></textarea>
+                <textarea name="description" id="" cols="30" rows="10" v-model="description" placeholder="Write a description"></textarea>
               </div>
-              
-              <select name="" id="" v-model="status">
-                <option value="" selected disabled hidden>status</option>
+              <div class="form-group">
+                <label for="status">Current Status</label>
+              <select name="status" id="" v-model="status" class="status" required>
+                <option value="" selected disabled>Select Status</option>
                 <option value="In Progress">In Progres</option>
                 <option value="Completed">Completed</option>
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
-              <div class="form-group">
                 <label for="due-date">Due Date</label>
                 <input type="date" name="due-date" id="date" class="form-control" v-model="dueDate">
               </div>
@@ -159,7 +159,7 @@ export default {
 .modal-body form .form-group label {
   margin: 0;
   padding-bottom: 5px;
-  padding-top: 2px;
+  padding-top: 5px;
 }
 .modal-body form .form-group input {
   width: 100%;
@@ -170,16 +170,16 @@ export default {
   color: #fff;
 }
 
-select {
-  width: 100% !important;
+select.status {
+  width: 109%;
   padding: 10px;
-  margin: 0 !important;
+  margin: 0 0 0 -2px !important;
   border-radius: 5px;
   border: 1px solid #e5e5e5;
   background: #292F4C;
   color: #fff;
   outline: none;
-  height: 45px;
+  height: 42px;
   line-height: 20px;
 }
 select option {
@@ -199,13 +199,15 @@ select option {
   resize: none;
 }
 button.btn {
-  width: 100%;
+  font-size: 18px;
+  width: 108%;
   padding: 10px;
   border-radius: 5px;
   border: none;
   background-color: #fff;
   color: #292F4C;
   cursor: pointer;
+  margin: 10px 0 0 -10px !important;
 }
 button.btn:hover {
   background-color: #002CFF;

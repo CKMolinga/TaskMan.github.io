@@ -36,6 +36,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
+  background: #2F3136;
 }
 .illustration {
   /* max-width: 80%; */
@@ -67,4 +68,18 @@ a.btn {
   text-decoration: none;
 }
 
+@media (max-width: 767.98px){
+  .hero-section {
+    background: #2F3136;
+  }
+  .illustration {
+    height: 45vh;
+  }
+  .two {
+    padding: 0.1rem;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+}
 </style>

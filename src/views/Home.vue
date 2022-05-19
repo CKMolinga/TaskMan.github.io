@@ -76,7 +76,7 @@ a.btn {
     height: 45vh;
   }
   .two {
-    padding: 0.1rem;
+    padding: 0 0.1rem;
   }
   h1 {
     font-size: 1.4rem;

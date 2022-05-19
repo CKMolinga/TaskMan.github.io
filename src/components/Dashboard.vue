@@ -146,6 +146,7 @@ import getTasks from '../composables/getTasks'
 import getSingleTask from '../composables/getSingleTask'
 import useLogout from '../composables/useLogout'
 import getUser from '../composables/getUser'
+import getMembers from '../composables/getMembers'
 
 
 export default {
@@ -159,6 +160,7 @@ export default {
         const { task, taskError, taskLoad } = getSingleTask()
         const { logout } = useLogout()
         const { user } = getUser()
+        const { members, memberError, memberLoad } = getMembers()
 
         // Redirects user to login page if they are not logged in
         watch(user, () => {
@@ -202,7 +204,7 @@ export default {
              toggleModal()
         }
 
-        return { tasks, task, error, taskError, user, handleClick, handleDelete, toggleModal,callDeleteTask,computedTask }
+        return { tasks, task, error, taskError, user, handleClick, handleDelete, toggleModal,callDeleteTask, computedTask, taskToBeDeleted, members, memberError, memberLoad }
 
     }
 

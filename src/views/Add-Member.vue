@@ -9,10 +9,10 @@
             <router-link to="/dashboard"><span class="close">&times;</span></router-link>
           </div>
           <div class="modal-body">
-            <form action="">
+            <form action=""  @submit.prevent="addMember">
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control" v-model="name">
+                <input type="text" name="name" id="name" class="form-control" v-model="username">
               </div>
               <div class="form-group">
                 <label for="email">Email
@@ -29,10 +29,13 @@
 
 <script>
 import { ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { db, timestamp } from '../firebase/config'
 
 import Dashboard from '../components/Dashboard.vue'
+
+// import getMembers from '../composables/getMembers'
 
 export default {
   name: 'Add-Member',
@@ -40,25 +43,26 @@ export default {
 
   setup() {
     const router = useRouter()
-    const assignedTask = ref([])
-    const name = ref(null)
-    const email = ref(null)
+    const username = ref('')
+    const email = ref('')
+    const members = ref([])
 
     const addMember = async () => {
-      const member = await db.collection('members').add({
-        name: name.value,
+      const member = {
+        id: Math.floor(Math.random() * 10000),
+        username: username.value,
         email: email.value,
-        createdAt: timestamp()
-      })
+      }
+    
+    const res = await db.collection('members').add(member)
 
-      console.log(member)
       router.push('/dashboard')
   }
 
   return {
-    name,
+    username,
     email,
-    addMember
+    addMember,
   }
 
 }

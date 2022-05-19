@@ -4,13 +4,11 @@ import router from './router'
 
 //firebase imports
 import { dbAuth } from './firebase/config'
-import { onAuthStateChanged } from 'firebase/auth'
 
-// let app
+let app
 
-// onAuthStateChanged(dbAuth, () => {
-//     if (!app) {
-//         app = 
-//     }
-// })
-createApp(App).use(router).mount('#app')
+dbAuth.onAuthStateChanged(() => {
+    if (!app) {
+        app = createApp(App).use(router).mount('#app')
+    }
+})

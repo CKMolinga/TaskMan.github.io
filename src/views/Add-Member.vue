@@ -73,13 +73,14 @@ export default {
 <style scoped>
 /* Overlay background of whole page */
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #e5e5e5af;
-  z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #e5e5e5af;
+    z-index: 100;
+    backdrop-filter: blur(5px);
 }
 
 /* modal style */

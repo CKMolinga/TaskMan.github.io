@@ -24,10 +24,10 @@
                     </router-link>
                 </li>
           </ul>
-          <router-link to="/dashboard">
+          <div class="profile-items">
             <div class="profile-img"></div>
             <h4>Hello {{ user.displayName }}</h4>
-          </router-link>
+          </div>
       </nav>
 
       <main class="left-flex">
@@ -265,13 +265,21 @@ ul.sidebar-menu li.menu-icon a:hover {
     width: 50%;
     height: auto;
 }
+div.profile-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    color: #fff;
+}
 .profile-img {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
     background: #fff;
     margin-bottom: 1rem;
-    background-image: url('../assets/profile.jpg');
+    background-image: url('../assets/userimg1.png');
     background-size: cover;
     background-position: center;
 
@@ -523,64 +531,6 @@ span.close {
 .delete-btn {
     background-color: red;
 }
-
-/* responsive design */
-/* @media (max-width: 768px) {
-    .task-group {
-        flex-direction: column;
-    }
-    .task-group h3 {
-        margin-right: 0;
-    }
-    .task-group span {
-        margin-right: 0;
-    }
-    .task-group-select {
-        display: none;
-    }
-    .tasks-table {
-        flex-direction: column;
-    }
-    .tasks-table th {
-        display: none;
-    }
-    .tasks-table td {
-        display: block;
-        width: 100%;
-        border: none;
-        padding: 0;
-        text-align: left;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        background-color: #292F4C;
-        border-radius: 0.2rem;
-        margin-bottom: 0.5rem;
-    }
-    .tasks-table td:last-child {
-        margin-bottom: 0;
-    }
-    .tasks-table td .material-icons {
-        font-size: 1.5rem;
-        margin-right: 0;
-        cursor: pointer;
-    }
-    .tasks-table td .assign-new-member {
-        font-size: 1.5rem;
-        margin-left: 0;
-        cursor: pointer;
-    }
-    .tasks-table td .comment {
-        margin-left: 0;
-        text-align: left;
-    }
-    .task-group-select select {
-        display: none;
-    }
-    .task-group-select span {
-        display: none;
-    }
-    } */
     
 
 </style>

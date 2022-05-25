@@ -1,108 +1,216 @@
 <template>
   <Dashboard></Dashboard>
-  <div class="overlay">
+  <transition name="smooth-in">
+    <div class="overlay" v-if="start">
       <div class="modal">
-        <p>Edit project is is:</p>
         <!-- Create modal -->
-        <!-- <div class="modal-content">
+        <div class="modal-content">
           <div class="modal-header">
-            <h3>Add New Project</h3>
-                <router-link to="/dashboard"><span class="close">&times;</span></router-link>
+            <h3>Update Task</h3>
+            <router-link to="/dashboard"
+              ><span class="close">&times;</span></router-link
+            >
           </div>
           <div class="modal-body">
-            <form action="" @submit.prevent="updateTask">
+            <form @submit.prevent="editTask">
               <div class="form-group flex">
                 <label for="name">Title</label>
-                <input type="text" name="name" id="name" class="form-control" v-model="title">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  class="form-control"
+                  v-model="task.title"
+                  placeholder="Name this task"
+                />
+                <div class="error">{{ error }}</div>
+                <label for="name">Members</label>
+                <input
+                  type="text"
+                  name="members"
+                  id="name"
+                  class="form-control"
+                  v-model="task.assignedTo"
+                  placeholder="*Assign already added members in comma seperated list"
+                />
                 <label for="description">Description</label>
-                <textarea name="description" id="" cols="30" rows="10" v-model="description"></textarea>
+                <textarea
+                  name="description"
+                  id=""
+                  cols="30"
+                  rows="10"
+                  v-model="task.description"
+                  placeholder="Write a description"
+                ></textarea>
               </div>
-              
-              <select name="" id="" v-model="status">
-                <option value="" selected disabled hidden>status</option>
-                <option value="In Progress">In Progres</option>
-                <option value="Completed">Completed</option>
-                <option value="Pending">Pending</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
               <div class="form-group">
+                <label for="status">Current Status</label>
+                <select
+                  name="status"
+                  id=""
+                  v-model="task.status"
+                  class="status"
+                  required
+                  aria-placeholder="status"
+                >
+                  <option value="" selected disabled>Select Status</option>
+                  <option value="In Progress">In Progres</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
                 <label for="due-date">Due Date</label>
-                <input type="date" name="due-date" id="date" class="form-control" v-model="dueDate">
+                <input
+                  type="date"
+                  name="due-date"
+                  id="date"
+                  class="form-control"
+                  v-model="task.dueDate"
+                />
               </div>
               <button class="btn" type="submit">Update</button>
             </form>
           </div>
-        </div> -->
+        </div>
       </div>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { db, timestamp } from '../firebase/config'
-import Dashboard from '../components/Dashboard.vue'
+import firebase from "firebase";
+import { ref, reactive, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { db, timestamp } from "../firebase/config";
+import Dashboard from "../components/Dashboard.vue";
+import getTasks from "../composables/getTasks";
+import getMembers from "../composables/getMembers";
 
 // import updateTask from '../composables/updateTask'
 
 export default {
-  components: {Dashboard},
+  name: "Update-Task",
+  components: { Dashboard },
 
   setup() {
-    const router = useRouter()
-    const assignedTo = ref([])
-    const dueDate = ref(null)
-    const status = ref(['In progress', 'Completed', 'Pending', 'Cancelled'])
-    const title = ref(null)
-    const description = ref(null)
-    const date = ref(null)
-    const name = ref(null)
+    const router = useRouter();
+    const route = useRoute();
+    const start = ref(false);
+    const realMembers = ref([]);
 
-    const updateTask = async () => {
-      const task = {
-        id: Math.floor(Math.random() * 10000),
-        title: title.value,
-        description: description.value,
-        assignedTo: assignedTo.value,
-        dueDate: dueDate.value.toString(),
-        status: status.value,
-        name: name.value,
-        createdAt: timestamp()
-      }
+    const error = ref(null);
 
-      return db.collection('tasks').doc(task.id).update({
-            ...task,
-            updatedAt: timestamp()
-        })
-        .then(doc => {
-            return {
-                id: doc.id,
-                ...task
-            };
-        })
-        .catch(err => {
-            console.log(err);
+    onMounted(() => {
+      setTimeout(() => {
+        start.value = true;
+      }, 2000);
+    });
+
+    let task = reactive({
+      id: route.params.id,
+      title: route.params.title,
+      description: route.params.description,
+      assignedTo: "",
+      dueDate: route.params.dueDate,
+      status: route.params.status,
+      createdAt: timestamp(),
+    });
+    const editTask = async () => {
+      try {
+        error.value = null;
+        let splitArr = task.assignedTo.split(",");
+
+        let assignArr = [];
+
+        for (let i = 0; i < splitArr.length; i++) {
+          assignArr.push(splitArr[i].trim());
+        }
+
+        let capitalizeArr = [];
+        let capitalizedName = "";
+        for (let i = 0; i < assignArr.length; i++) {
+          capitalizedName =
+            assignArr[i].charAt(0).toUpperCase() + assignArr[i].slice(1);
+          capitalizeArr.push(capitalizedName);
+        }
+
+        const { members } = await getMembers();
+        let list = members.map((data) => data.data().username);
+
+        let mem = list.map((member) => {
+          if (capitalizeArr.includes(member)) return member;
         });
-      
-    }
+        for (let i = 0; i < mem.length; i++) {
+          if (mem[i] !== undefined) {
+            realMembers.value.push(mem[i]);
+          }
+        }
+        console.log(realMembers);
+        if (realMembers.value.length === capitalizeArr.length) {
+          let updatedTask = {
+            id: route.params.id,
+            title: task.title,
+            description: task.description,
+            assignedTo: capitalizeArr,
+            dueDate: task.dueDate,
+            status: task.status,
+            createdAt: timestamp(),
+          };
 
-    router.push('/dashboard')
+          await db
+            .collection("tasks")
+            .doc(updatedTask.id)
+            .update(updatedTask)
+            .then(async () => {
+              try {
+                console.log("the update was ok");
+
+                router.push("/dashboard");
+              } catch (err) {
+                console.log(err);
+              }
+            })
+            .catch((err) => console.log(err));
+        } else {
+          error.value = "Please check the names to ensure these members exist";
+          console.log(error);
+        }
+      } catch (err) {
+        error.value = "some members are not verified";
+        console.log(err);
+      }
+    };
 
     return {
-      assignedTo,
-      dueDate,
-      status,
-      title,
-      description,
-      date,
-      name,
-      updateTask
-    }
-  }
-}
+      task,
+      start,
+      error,
+      editTask,
+    };
+  },
+};
 </script>
 
 <style scoped>
+.smooth-in-enter-from {
+  opacity: 0;
+}
+
+.smooth-in-enter-active,
+.smooth-in-leave-active {
+  transition: all 1s ease;
+}
+
+.smooth-in-leave-to {
+  opacity: 0;
+}
+.error {
+  color: red;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 /* Overlay background of whole page */
 .overlay {
   position: fixed;
@@ -122,7 +230,7 @@ export default {
   transform: translate(-50%, -50%);
   width: 80%;
   max-width: 600px;
-  background-color: #292F4C;
+  background-color: #292f4c;
   color: #fff;
   z-index: 101;
   padding: 30px;
@@ -188,7 +296,7 @@ select {
   margin: 0 !important;
   border-radius: 5px;
   border: 1px solid #e5e5e5;
-  background: #292F4C;
+  background: #292f4c;
   color: #fff;
   outline: none;
   height: 45px;
@@ -196,7 +304,7 @@ select {
 }
 select option {
   color: #fff;
-  background: #292F4C;
+  background: #292f4c;
 }
 .modal-body form .form-group input:focus {
   outline: none;
@@ -216,11 +324,18 @@ button.btn {
   border-radius: 5px;
   border: none;
   background-color: #fff;
-  color: #292F4C;
+  color: #292f4c;
   cursor: pointer;
 }
 button.btn:hover {
-  background-color: #002CFF;
+  background-color: #002cff;
   color: #fff;
+}
+
+@media (max-width: 767.98px) {
+  span.close {
+    top: -25px;
+    left: 140px;
+  }
 }
 </style>

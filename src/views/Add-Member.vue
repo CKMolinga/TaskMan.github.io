@@ -1,86 +1,100 @@
 <template>
   <Dashboard></Dashboard>
   <div class="overlay">
-      <div class="modal">
-        <!-- Create modal -->
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Add New Team Member</h3>
-            <router-link to="/dashboard"><span class="close">&times;</span></router-link>
-          </div>
-          <div class="modal-body">
-            <form action=""  @submit.prevent="addMember">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control" v-model="username">
-              </div>
-              <div class="form-group">
-                <label for="email">Email
-                </label>
-                <input type="email" name="email" id="email" class="form-control" v-model="email">
-              </div>
-              <button class="btn" type="submit">Invite</button>
-            </form>
-          </div>
+    <div class="modal">
+      <!-- Create modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Team Member</h3>
+          <router-link to="/dashboard"
+            ><span class="close">&times;</span></router-link
+          >
+        </div>
+        <div class="modal-body">
+          <form action="" @submit.prevent="addMember">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                class="form-control"
+                v-model="username"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control"
+                v-model="email"
+              />
+            </div>
+            <button class="btn" type="submit">Add</button>
+          </form>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { db, timestamp } from '../firebase/config'
+import { ref } from "vue";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { db, timestamp } from "../firebase/config";
 
-import Dashboard from '../components/Dashboard.vue'
+import Dashboard from "../components/Dashboard.vue";
 
-// import getMembers from '../composables/getMembers'
+import getMembers from "../composables/getMembers";
 
 export default {
-  name: 'Add-Member',
-  components: {Dashboard},
+  name: "Add-Member",
+  components: { Dashboard },
 
   setup() {
-    const router = useRouter()
-    const username = ref('')
-    const email = ref('')
-    const members = ref([])
+    const router = useRouter();
+    const username = ref("");
+    const email = ref("");
+    // const members = ref([]);
 
     const addMember = async () => {
+      let capitalizedName =
+        username.value.charAt(0).toUpperCase() + username.value.slice(1);
+
       const member = {
         id: Math.floor(Math.random() * 10000),
-        username: username.value,
+        username: capitalizedName,
         email: email.value,
-      }
-    
-    const res = await db.collection('members').add(member)
+      };
 
-      router.push('/dashboard')
-  }
+      const res = await db.collection("members").add(member);
 
-  return {
-    username,
-    email,
-    addMember,
-  }
+      router.push("/dashboard");
+    };
 
-}
-
-}
+    return {
+      username,
+      email,
+      addMember,
+    };
+  },
+};
 </script>
 
 <style scoped>
 /* Overlay background of whole page */
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #e5e5e5af;
-    z-index: 100;
-    backdrop-filter: blur(5px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5e5af;
+  z-index: 100;
+  backdrop-filter: blur(5px);
 }
 
 /* modal style */
@@ -91,7 +105,7 @@ export default {
   transform: translate(-50%, -50%);
   width: 80%;
   max-width: 500px;
-  background-color: #292F4C;
+  background-color: #292f4c;
   color: #fff;
   z-index: 101;
   padding: 30px;
@@ -159,11 +173,18 @@ button.btn {
   border-radius: 5px;
   border: none;
   background-color: #fff;
-  color: #292F4C;
+  color: #292f4c;
   cursor: pointer;
 }
 button.btn:hover {
-  background-color: #002CFF;
+  background-color: #002cff;
   color: #fff;
+}
+
+@media (max-width: 767.98px) {
+  span.close {
+    top: -25px;
+    left: 110px;
+  }
 }
 </style>

@@ -3,11 +3,20 @@
     <Navbar></Navbar>
     <main>
       <section class="hero-section">
-        <img class="illustration" src="../assets/Time-management.png" alt="hero section illustration">
+        <img
+          class="illustration"
+          src="../assets/Time-management.png"
+          alt="hero section illustration"
+        />
       </section>
       <section class="two">
-        <h1>The Task Mangement App for local service providers</h1>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum, sit! Voluptatibus reprehenderit eius esse hic obcaecati necessitatibus molestias unde earum praesentium totam quasi quis omnis enim error repellendus dolores dolorem nostrum vel sapiente perferendis eum debitis, ab quisquam. Rerum minus necessitatibus soluta in quibusdam sapiente accusamus dicta nesciunt saepe numquam.</p>
+        <h1>Best Solution For Local Service Providers</h1>
+        <p>
+          TaskMan is the best solution for local services providers in Cameroon
+          to manage tasks, as well as assigned tasks to workers. Be Productive
+          as a service provider while going about your busy daily schedule. Keep
+          track of tasks and their status from your device.
+        </p>
         <div class="cta flex">
           <router-link to="Signup" class="btn">Get started</router-link>
         </div>
@@ -17,12 +26,12 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
+import Navbar from "../components/Navbar.vue";
 
 export default {
-  name: 'Home',
-  components: {Navbar}
-}
+  name: "Home",
+  components: { Navbar },
+};
 </script>
 
 <style scoped>
@@ -36,7 +45,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
-  background: #2F3136;
+  background: #2f3136;
 }
 .illustration {
   /* max-width: 80%; */
@@ -63,14 +72,14 @@ a.btn {
   margin-bottom: 1rem;
   outline: none;
   color: #fff;
-  background-color: #42B883;
+  background-color: #42b883;
   font-weight: bold;
   text-decoration: none;
 }
 
-@media (max-width: 767.98px){
+@media (max-width: 767.98px) {
   .hero-section {
-    background: #2F3136;
+    background: #2f3136;
   }
   .illustration {
     height: 45vh;
